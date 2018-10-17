@@ -14,7 +14,11 @@
 #define PLL_CLOCK           50000000
 
 
+#if defined(__GNUC_AP__)
+#define APROM_TEST_BASE             0x9000
+#else
 #define APROM_TEST_BASE             0x3000
+#endif
 #define APROM_TEST_END              0xF000
 #define DATA_FLASH_TEST_BASE        0xF000
 #define DATA_FLASH_TEST_END         0x11000
@@ -200,7 +204,7 @@ int main()
 
     printf("\n\n");
     printf("+----------------------------------------+\n");
-    printf("|          M0518 FMC Sample Code        |\n");
+    printf("|          M0518 FMC Sample Code         |\n");
     printf("+----------------------------------------+\n");
 
     //SYS_UnlockReg();

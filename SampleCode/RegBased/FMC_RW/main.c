@@ -93,7 +93,7 @@ int main()
 
     printf("\n\n");
     printf("+----------------------------------------+\n");
-    printf("|          M0518 FMC Sample Code        |\n");
+    printf("|          M0518 FMC Sample Code         |\n");
     printf("+----------------------------------------+\n");
 
     /* Enable FMC ISP functions */
@@ -115,7 +115,11 @@ int main()
     printf("  UID[95:64] ................................. [0x%08x]\n", FMC_ReadUID(2));
 
     /* The ROM address for erase/write/read demo */
+#if defined(__GNUC_AP__)
+    u32Addr = 0x9000;
+#else
     u32Addr = 0x4000;
+#endif
 
     /* Erase Demo */
     FMC_Erase(u32Addr);

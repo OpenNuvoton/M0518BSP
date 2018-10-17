@@ -21,7 +21,6 @@
 /* Define functions prototype                                                                              */
 /*---------------------------------------------------------------------------------------------------------*/
 extern char GetChar(void);
-int32_t main(void);
 void IrDA_FunctionRxTest(void);
 
 
