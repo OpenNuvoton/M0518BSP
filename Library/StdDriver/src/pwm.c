@@ -322,13 +322,11 @@ uint32_t PWM_GetADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum)
  *                  - \ref PWM_FB_EDGE_BKP1
  *                  - \ref PWM_FB_EDGE_SYS_CSS
  *                  - \ref PWM_FB_EDGE_SYS_BOD
- *                  - \ref PWM_FB_EDGE_SYS_RAM
  *                  - \ref PWM_FB_EDGE_SYS_COR
  *                  - \ref PWM_FB_LEVEL_BKP0
  *                  - \ref PWM_FB_LEVEL_BKP1
  *                  - \ref PWM_FB_LEVEL_SYS_CSS
  *                  - \ref PWM_FB_LEVEL_SYS_BOD
- *                  - \ref PWM_FB_LEVEL_SYS_RAM
  *                  - \ref PWM_FB_LEVEL_SYS_COR
  * @return None
  * @details This function is used to enable fault brake of selected channel(s).
@@ -342,9 +340,9 @@ void PWM_EnableFaultBrake(PWM_T *pwm, uint32_t u32ChannelMask, uint32_t u32Level
         if(u32ChannelMask & (1 << i))
         {
             if((u32BrakeSource == PWM_FB_EDGE_SYS_CSS) || (u32BrakeSource == PWM_FB_EDGE_SYS_BOD) || \
-                    (u32BrakeSource == PWM_FB_EDGE_SYS_RAM) || (u32BrakeSource == PWM_FB_EDGE_SYS_COR) || \
+                    (u32BrakeSource == PWM_FB_EDGE_SYS_COR) || \
                     (u32BrakeSource == PWM_FB_LEVEL_SYS_CSS) || (u32BrakeSource == PWM_FB_LEVEL_SYS_BOD) || \
-                    (u32BrakeSource == PWM_FB_LEVEL_SYS_RAM) || (u32BrakeSource == PWM_FB_LEVEL_SYS_COR))
+                    (u32BrakeSource == PWM_FB_LEVEL_SYS_COR))
             {
                 *(__IO uint32_t *)(&((pwm)->BRKCTL0_1) + (i >> 1)) |= (u32BrakeSource & (PWM_BRKCTL0_1_SYSEBEN_Msk | PWM_BRKCTL0_1_SYSLBEN_Msk));
                 (pwm)->FAILBRK |= (u32BrakeSource & 0xF);

@@ -5589,9 +5589,6 @@ typedef struct
 #define PWM_FAILBRK_BODBRKEN_Pos         (1)                                                /*!< PWM_T::FAILBRK: BODBRKEN Position         */
 #define PWM_FAILBRK_BODBRKEN_Msk         (0x1ul << PWM_FAILBRK_BODBRKEN_Pos)                /*!< PWM_T::FAILBRK: BODBRKEN Mask             */
 
-#define PWM_FAILBRK_RAMBRKEN_Pos         (2)                                                /*!< PWM_T::FAILBRK: RAMBRKEN Position         */
-#define PWM_FAILBRK_RAMBRKEN_Msk         (0x1ul << PWM_FAILBRK_RAMBRKEN_Pos)                /*!< PWM_T::FAILBRK: RAMBRKEN Mask             */
-
 #define PWM_FAILBRK_CORBRKEN_Pos         (3)                                                /*!< PWM_T::FAILBRK: CORBRKEN Position         */
 #define PWM_FAILBRK_CORBRKEN_Msk         (0x1ul << PWM_FAILBRK_CORBRKEN_Pos)                /*!< PWM_T::FAILBRK: CORBRKEN Mask             */
 

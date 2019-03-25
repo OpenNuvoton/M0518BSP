@@ -125,6 +125,15 @@ extern "C"
 #define BPWM_DISABLE_TIMER_SYNC(bpwm, u32ChannelMask) ((bpwm)->SSCTL &= ~BPWM_SSCTL_SSEN0_Msk)
 
 /**
+ * @brief This macro enable BPWM counter synchronous enable function.
+ * @param[in] bpwm The pointer of the specified BPWM module.
+ * @return None
+ * @details This macro is used to make selected BPWM0 and BPWM1 channel(s) start counting at the same time.
+ * \hideinitializer
+ */
+#define BPWM_TRIGGER_SYNC_START(bpwm) ((bpwm)->SSTRG = BPWM_SSTRG_CNTSEN_Msk)
+
+/**
  * @brief This macro enable output inverter of specified channel(s)
  * @param[in] bpwm The pointer of the specified BPWM module
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel
