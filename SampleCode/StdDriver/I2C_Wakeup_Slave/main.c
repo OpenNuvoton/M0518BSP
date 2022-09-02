@@ -61,7 +61,7 @@ void I2C0_IRQHandler(void)
     }
 }
 /*---------------------------------------------------------------------------------------------------------*/
-/*  Power Wake-up IRQ Handler                                                                                       */
+/*  Power Wake-up IRQ Handler                                                                              */
 /*---------------------------------------------------------------------------------------------------------*/
 void PWRWU_IRQHandler(void)
 {
@@ -76,7 +76,7 @@ void PWRWU_IRQHandler(void)
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*  I2C Slave Transmit/Receive Callback Function                                                                               */
+/*  I2C Slave Transmit/Receive Callback Function                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
 void I2C_SlaveTRx(uint32_t u32Status)
 {
@@ -173,13 +173,13 @@ void SYS_Init(void)
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
     SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
-    
+
     /* Set GPA multi-function pins for I2C0 SDA and SCL */
     SYS->GPA_MFP &= ~(SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk);
     SYS->GPA_MFP |= (SYS_GPA_MFP_PA8_I2C0_SDA | SYS_GPA_MFP_PA9_I2C0_SCL);
 }
 
-void UART0_Init()
+void UART0_Init(void)
 {
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init UART                                                                                               */
@@ -232,7 +232,7 @@ void I2C0_Close(void)
 /*---------------------------------------------------------------------------------------------------------*/
 int32_t main(void)
 {
-    uint32_t i;
+    uint32_t i, u32TimeOutCnt;
 
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -244,7 +244,7 @@ int32_t main(void)
     UART0_Init();
 
     /* Lock protected registers */
-    SYS_LockReg();;
+    SYS_LockReg();
 
     /*
         This sample code is I2C SLAVE mode and it simulates EEPROM function
@@ -258,7 +258,7 @@ int32_t main(void)
 
     printf("Configure I2C0 as a slave.\n");
     printf("The I/O connection for I2C0:\n");
-    printf("I2C0_SDA(P3.4), I2C0_SCL(P3.5)\n");
+    printf("I2C0_SDA(PA.8), I2C0_SCL(PA.9)\n");
 
     /* Init I2C0 */
     I2C0_Init();
@@ -289,8 +289,11 @@ int32_t main(void)
     printf("Enter PD 0x%x 0x%x\n", I2C0->I2CON , I2C0->I2CSTATUS);
     printf("\n");
     printf("CHIP enter power down status.\n");
-    /* Waiting for UART printf finish*/
-    while(((UART0->FSR) & UART_FSR_TE_FLAG_Msk) == 0);
+
+    /* Waiting for UART printf finish */
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    while(((UART0->FSR) & UART_FSR_TE_FLAG_Msk) == 0)
+        if(--u32TimeOutCnt == 0) break;
 
     if(((I2C0->I2CON)&I2C_I2CON_SI_Msk) != 0)
     {

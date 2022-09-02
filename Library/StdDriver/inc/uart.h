@@ -32,17 +32,17 @@ extern "C"
 /** @addtogroup M0518_UART_EXPORTED_CONSTANTS UART Exported Constants
   @{
 */
-    
+
 /*---------------------------------------------------------------------------------------------------------*/
 /* UART FIFO size constants definitions                                                                    */
 /*---------------------------------------------------------------------------------------------------------*/
 
 #define UART0_FIFO_SIZE 16 /*!< UART0 supports separated receive/transmit 16/16 bytes entry FIFO */
-#define UART1_FIFO_SIZE 16 /*!< UART1 supports separated receive/transmit 16/16 bytes entry FIFO */    
-#define UART2_FIFO_SIZE 16 /*!< UART2 supports separated receive/transmit 16/16 bytes entry FIFO */ 
-#define UART3_FIFO_SIZE 1  /*!< UART3 supports separated receive/transmit 1/1 byte buffer */ 
-#define UART4_FIFO_SIZE 1  /*!< UART4 supports separated receive/transmit 1/1 byte buffer */ 
-#define UART5_FIFO_SIZE 1  /*!< UART5 supports separated receive/transmit 1/1 byte buffer */     
+#define UART1_FIFO_SIZE 16 /*!< UART1 supports separated receive/transmit 16/16 bytes entry FIFO */
+#define UART2_FIFO_SIZE 16 /*!< UART2 supports separated receive/transmit 16/16 bytes entry FIFO */
+#define UART3_FIFO_SIZE 1  /*!< UART3 supports separated receive/transmit 1/1 byte buffer */
+#define UART4_FIFO_SIZE 1  /*!< UART4 supports separated receive/transmit 1/1 byte buffer */
+#define UART5_FIFO_SIZE 1  /*!< UART5 supports separated receive/transmit 1/1 byte buffer */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* UA_FCR constants definitions                                                                            */
@@ -98,7 +98,7 @@ extern "C"
 #define UART_FUNC_SEL_RS485   (0x3 << UART_FUN_SEL_FUN_SEL_Pos) /*!< UA_FUNC_SEL setting to set RS485 Function           */
 
 /*---------------------------------------------------------------------------------------------------------*/
-/* UA_LIN_CTL constants definitions                                                                       */
+/* UA_LIN_CTL constants definitions                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
 #define UART_LIN_CTL_LINS_EN        (0x1UL << UART_LIN_CTL_LINS_EN_Pos)       /*!< UA_LIN_CTL setting to set LIN Slave Mode Enable */
 #define UART_LIN_CTL_LINS_HDET_EN   (0x1UL << UART_LIN_CTL_LINS_HDET_EN_Pos)  /*!< UA_LIN_CTL setting to set LIN Slave Header Detection Enable */
@@ -118,7 +118,7 @@ extern "C"
 #define UART_LIN_CTL_LIN_LIN_PID(x) ((x) << UART_LIN_CTL_LIN_PID_Pos)       /*!< UA_LIN_CTL setting to set LIN PID value */
 
 /*---------------------------------------------------------------------------------------------------------*/
-/* UART BAUDRATE MODE constants definitions                                                                       */
+/* UART BAUDRATE MODE constants definitions                                                                */
 /*---------------------------------------------------------------------------------------------------------*/
 #define UART_BAUD_MODE0     (0) /*!< Set UART Baudrate Mode is Mode0 */
 #define UART_BAUD_MODE2     (UART_BAUD_DIV_X_EN_Msk | UART_BAUD_DIV_X_ONE_Msk) /*!< Set UART Baudrate Mode is Mode2 */
@@ -158,10 +158,10 @@ extern "C"
 
 
 /**
- *    @brief        Write data
+ *    @brief        Write UART data
  *
- *    @param[in]    uart    The base address of UART module
- *    @param[in]    u8Data  Data byte to transmit
+ *    @param[in]    uart    The pointer of the specified UART module.
+ *    @param[in]    u8Data  Data byte to transmit.
  *
  *    @return       None
  *
@@ -170,11 +170,11 @@ extern "C"
 #define UART_WRITE(uart, u8Data)    ((uart)->THR = (u8Data))
 
 /**
- *    @brief        Read data
+ *    @brief        Read UART data
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
- *    @return       The oldest data byte in RX FIFO
+ *    @return       The oldest data byte in RX FIFO.
  *
  *    @details      This macro read Rx data register.
  */
@@ -184,7 +184,7 @@ extern "C"
 /**
  *    @brief        Get Tx empty
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
  *
  *    @retval       0   Tx FIFO is not empty
  *    @retval       >=1 Tx FIFO is empty
@@ -221,7 +221,7 @@ extern "C"
 /**
  *    @brief        Wait specified uart port transmission is over
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
  *    @return       None
  *
@@ -232,7 +232,7 @@ extern "C"
 /**
  *    @brief        Check RX is ready or not
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
  *    @retval       0 The number of bytes in the RX FIFO is less than the RFITL
  *    @retval       1 The number of bytes in the RX FIFO equals or larger than RFITL
@@ -245,7 +245,7 @@ extern "C"
 /**
  *    @brief        Check TX FIFO is full or not
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
  *    @retval       1 TX FIFO is full
  *    @retval       0 TX FIFO is not full
@@ -257,7 +257,7 @@ extern "C"
 /**
  *    @brief        Check RX FIFO is full or not
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
  *    @retval       1 RX FIFO is full
  *    @retval       0 RX FIFO is not full
@@ -296,18 +296,18 @@ extern "C"
 /**
  *    @brief        Enable specified UART interrupt
  *
- *    @param[in]    uart        The base address of UART module
+ *    @param[in]    uart        The pointer of the specified UART module.
  *    @param[in]    u32eIntSel  Interrupt type select
- *                              - UART_IER_AERIEN_Msk       : Auto baud rate interrupt 
- *                              - UART_IER_WKDATIEN_Msk     : Data wakeup interrupt
- *                              - UART_IER_LIN_IEN_Msk      : Lin bus interrupt
- *                              - UART_IER_WKCTSIEN_Msk     : CTS wakeup interrupt
- *                              - UART_IER_BUF_ERR_IEN_Msk  : Buffer Error interrupt
- *                              - UART_IER_TOUT_IEN_Msk     : Rx time-out interrupt
- *                              - UART_IER_MODEM_IEN_Msk    : Modem interrupt
- *                              - UART_IER_RLS_IEN_Msk      : Rx Line status interrupt
- *                              - UART_IER_THRE_IEN_Msk     : Tx empty interrupt
- *                              - UART_IER_RDA_IEN_Msk      : Rx ready interrupt
+ *                              - \ref UART_IER_AERIEN_Msk       : Auto baud rate interrupt
+ *                              - \ref UART_IER_WKDATIEN_Msk     : Data wakeup interrupt
+ *                              - \ref UART_IER_LIN_IEN_Msk      : Lin bus interrupt
+ *                              - \ref UART_IER_WKCTSIEN_Msk     : CTS wakeup interrupt
+ *                              - \ref UART_IER_BUF_ERR_IEN_Msk  : Buffer Error interrupt
+ *                              - \ref UART_IER_TOUT_IEN_Msk     : Rx time-out interrupt
+ *                              - \ref UART_IER_MODEM_IEN_Msk    : Modem interrupt
+ *                              - \ref UART_IER_RLS_IEN_Msk      : Rx Line status interrupt
+ *                              - \ref UART_IER_THRE_IEN_Msk     : Tx empty interrupt
+ *                              - \ref UART_IER_RDA_IEN_Msk      : Rx ready interrupt
  *
  *    @return       None
  *
@@ -319,21 +319,21 @@ extern "C"
 /**
  *    @brief        Disable specified UART interrupt
  *
- *    @param[in]    uart        The base address of UART module
+ *    @param[in]    uart        The pointer of the specified UART module.
  *    @param[in]    u32eIntSel  Interrupt type select
- *                              - UART_IER_AERIEN_Msk       : Auto baud rate interrupt 
- *                              - UART_IER_WKDATIEN_Msk     : Data wakeup interrupt
- *                              - UART_IER_LIN_IEN_Msk      : Lin bus interrupt
- *                              - UART_IER_WKCTSIEN_Msk     : CTS wakeup interrupt
- *                              - UART_IER_BUF_ERR_IEN_Msk  : Buffer Error interrupt
- *                              - UART_IER_TOUT_IEN_Msk     : Rx time-out interrupt
- *                              - UART_IER_MODEM_IEN_Msk    : Modem interrupt
- *                              - UART_IER_RLS_IEN_Msk      : Rx Line status interrupt
- *                              - UART_IER_THRE_IEN_Msk     : Tx empty interrupt
- *                              - UART_IER_RDA_IEN_Msk      : Rx ready interrupt
+ *                              - \ref UART_IER_AERIEN_Msk       : Auto baud rate interrupt
+ *                              - \ref UART_IER_WKDATIEN_Msk     : Data wakeup interrupt
+ *                              - \ref UART_IER_LIN_IEN_Msk      : Lin bus interrupt
+ *                              - \ref UART_IER_WKCTSIEN_Msk     : CTS wakeup interrupt
+ *                              - \ref UART_IER_BUF_ERR_IEN_Msk  : Buffer Error interrupt
+ *                              - \ref UART_IER_TOUT_IEN_Msk     : Rx time-out interrupt
+ *                              - \ref UART_IER_MODEM_IEN_Msk    : Modem interrupt
+ *                              - \ref UART_IER_RLS_IEN_Msk      : Rx Line status interrupt
+ *                              - \ref UART_IER_THRE_IEN_Msk     : Tx empty interrupt
+ *                              - \ref UART_IER_RDA_IEN_Msk      : Rx ready interrupt
  *    @return       None
  *
- *    @details      This macro enable specified UART interrupt.
+ *    @details      This macro disable specified UART interrupt.
  */
 #define UART_DISABLE_INT(uart, u32eIntSel)    ((uart)->IER &= ~ (u32eIntSel))
 
@@ -341,7 +341,7 @@ extern "C"
 /**
  *    @brief        Get specified interrupt indicator status
  *
- *    @param[in]    uart            Get specified interrupt flag/status
+ *    @param[in]    uart            The pointer of the specified UART module
  *    @param[in]    u32eIntTypeFlag Interrupt Type Flag, should be
  *                                  - \ref UART_ISR_DATWKIF_Msk     : Data Wake-up Interrupt Flag
  *                                  - \ref UART_ISR_CTSWKIF_Msk     : nCTS Wake-up Interrupt Flag 
@@ -372,7 +372,7 @@ extern "C"
 /**
  *    @brief        Set RTS pin to low
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
  *    @return       None
  *
@@ -387,7 +387,7 @@ __STATIC_INLINE void UART_CLEAR_RTS(UART_T* uart)
 /**
  *    @brief        Set RTS pin to high
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
  *    @return       None
  *
@@ -402,7 +402,7 @@ __STATIC_INLINE void UART_SET_RTS(UART_T* uart)
 /**
  *    @brief        Clear RS-485 Address Byte Detection Flag
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
  *    @return       None
  *
@@ -414,16 +414,17 @@ __STATIC_INLINE void UART_SET_RTS(UART_T* uart)
 /**
  *    @brief        Get RS-485 Address Byte Detection Flag
  *
- *    @param[in]    uart    The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
- *    @return       RS-485 Address Byte Detection Flag
+ *    @retval       0 Receiver detects a data that is not an address bit.
+ *    @retval       1 Receiver detects a data that is an address bit.
  *
  *    @details      This macro get RS-485 address byte detection flag.
  */
 #define UART_RS485_GET_ADDR_FLAG(uart)    (((uart)->FSR  & UART_FSR_RS485_ADD_DETF_Msk) >> UART_FSR_RS485_ADD_DETF_Pos)
 
 
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag);
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag);
 void UART_Close(UART_T* uart);
 void UART_DisableFlowCtrl(UART_T* uart);
 void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag);

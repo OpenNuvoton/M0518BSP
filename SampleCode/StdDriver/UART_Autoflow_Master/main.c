@@ -75,7 +75,7 @@ void SYS_Init(void)
 
 }
 
-void UART0_Init()
+void UART0_Init(void)
 {
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init UART                                                                                               */
@@ -103,13 +103,13 @@ void UART1_Init()
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
 
-int main(void)
+int32_t main(void)
 {
 
     /* Unlock protected registers */
     SYS_UnlockReg();
 
-    /* Init System, IP clock and multi-function I/O */
+    /* Init System, peripheral clock and multi-function I/O */
     SYS_Init();
 
     /* Lock protected registers */
@@ -137,7 +137,7 @@ int main(void)
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*  AutoFlow Function Tx Test                                                                                 */
+/*  AutoFlow Function Tx Test                                                                              */
 /*---------------------------------------------------------------------------------------------------------*/
 void AutoFlow_FunctionTxTest()
 {
@@ -162,7 +162,7 @@ void AutoFlow_FunctionTxTest()
     printf("|  Description :                                            |\n");
     printf("|    The sample code needs two boards. One is Master and    |\n");
     printf("|    the other is slave. Master will send 1k bytes data     |\n");
-    printf("|    to slave.Slave will check if received data is correct  |\n");
+    printf("|    to slave. Slave will check if received data is correct |\n");
     printf("|    after getting 1k bytes data.                           |\n");
     printf("|    Press any key to start...                              |\n");
     printf("+-----------------------------------------------------------+\n");

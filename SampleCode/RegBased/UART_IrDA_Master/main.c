@@ -74,7 +74,7 @@ void IrDA_FunctionTxTest()
     printf("| 3). Return step 1. (Press '0' to exit)                    |\n");
     printf("+-----------------------------------------------------------+\n");
 
-    printf("\nIRDA Sample Code Start. \n");
+    printf("\nIrDA Sample Code Start. \n");
 
     /* In IrDA Mode, Baud Rate configuration must be used MODE0 */
     UART1->BAUD = UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER(__HXT, 57600);
@@ -116,7 +116,7 @@ void SYS_Init(void)
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to Power-down mode */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk;    
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
     
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
@@ -189,7 +189,7 @@ void UART1_Init()
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
 
-int main(void)
+int32_t main(void)
 {
 
     /* Unlock protected registers */

@@ -28,7 +28,7 @@ int32_t main()
 #endif
 
     /*
-        To enable semihost, user must define "DEBUG_ENABLE_SEMIHOST" constant when build code with M051Series BSP.
+        To enable semihost, user must define "DEBUG_ENABLE_SEMIHOST" constant when build code with M0518 BSP.
         This sample code is used to show how to print message/getchar on IDE debug environment.
         It will echo all input character back on UART #1 of KEIL IDE.
 

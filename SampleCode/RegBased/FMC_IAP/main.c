@@ -1,5 +1,5 @@
 /**************************************************************************//**
- * @file     FMC_IAP.c
+ * @file     main.c
  * @version  V2.00
  * $Revision: 2 $
  * $Date: 14/12/25 10:23a $
@@ -26,6 +26,8 @@ extern uint32_t loaderImageLimit;
 uint32_t g_u32ImageSize;
 
 uint32_t *g_au32funcTable = (uint32_t *)0x100e00; /* The location of function table */
+
+int32_t g_FMC_i32ErrCode;
 
 void SYS_Init(void)
 {
@@ -62,7 +64,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */

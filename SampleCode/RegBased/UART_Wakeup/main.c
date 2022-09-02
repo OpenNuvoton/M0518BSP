@@ -26,12 +26,16 @@ void UART_PowerDownWakeUpTest(void);
 /*---------------------------------------------------------------------------------------------------------*/
 void PowerDownFunction(void)
 {
+    uint32_t u32TimeOutCnt;
+
     /* Check if all the debug messages are finished */
-    UART_WAIT_TX_EMPTY(UART0);
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    UART_WAIT_TX_EMPTY(UART0)
+        if(--u32TimeOutCnt == 0) break;
 
     /* Set the processor is deep sleep as its low power mode */
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-    
+
     /* Set system Power-down enabled and Power-down entry condition */
     CLK->PWRCON |= (CLK_PWRCON_PWR_DOWN_EN_Msk | CLK_PWRCON_PD_WAIT_CPU_Msk);    
 
@@ -62,7 +66,7 @@ void SYS_Init(void)
     CLK->APBCLK |= (CLK_APBCLK_UART0_EN_Msk | CLK_APBCLK_UART1_EN_Msk);
 
     /* Select UART module clock source */
-    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HIRC;
+    CLK->CLKSEL1 = (CLK->CLKSEL1 & (~CLK_CLKSEL1_UART_S_Msk)) | CLK_CLKSEL1_UART_S_HIRC;
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -110,7 +114,7 @@ void UART1_Init()
 /*---------------------------------------------------------------------------------------------------------*/
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-int main(void)
+int32_t main(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -133,10 +137,12 @@ int main(void)
 
     printf("\n\nCPU @ %dHz\n", SystemCoreClock);
 
-    printf("\n\nUART Sample Program\n");
+    printf("\n\nUART Sample Program.\n");
 
-    /* UART sample function */
+    /* UART wake-up sample function */
     UART_PowerDownWakeUpTest();
+
+    printf("\nUART Sample Program End.\n");
 
     while(1);
 
@@ -188,7 +194,7 @@ void UART_CTSWakeUp(void)
     PowerDownFunction();
 
     /* Lock protected registers after entering Power-down mode */
-    SYS_UnlockReg();
+    SYS_LockReg();
 
     /* Clear MODEM interrupt after CTS wake-up interrupt */
     UART1->MSR |= UART_MSR_DCTSF_Msk;
@@ -204,10 +210,11 @@ void UART_CTSWakeUp(void)
 /*---------------------------------------------------------------------------------------------------------*/
 void UART_DataWakeUp(void)
 {
+    uint32_t u32TimeOutCnt;
 
     /* Enable UART data wake-up interrupt */
     UART1->IER |= UART_IER_WKDATIEN_Msk;
-    NVIC_EnableIRQ(UART1_IRQn); 
+    NVIC_EnableIRQ(UART1_IRQn);
 
     printf("System enter to Power-down mode.\n");
     printf("Send data with baud rate 110bps to UART1 to wake-up system.\n");
@@ -219,11 +226,17 @@ void UART_DataWakeUp(void)
     PowerDownFunction();
 
     /* Lock protected registers after entering Power-down mode */
-    SYS_UnlockReg();
+    SYS_LockReg();
 
     /* Wait to receive wake-up data */
-    while(!UART_IS_RX_READY(UART1));   
-    printf("The first wake-up data is 0x%x.\n", UART_READ(UART1));
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    while(!UART_IS_RX_READY(UART1))
+        if(--u32TimeOutCnt == 0) break;
+
+    if(u32TimeOutCnt == 0)
+        printf("Wait for receive wake-up data time-out!\n");
+    else
+        printf("The first wake-up data is 0x%x.\n", UART_READ(UART1));
 
     /* Disable UART Data Wake-up Interrupt */
     UART1->IER &= ~UART_IER_WKDATIEN_Msk;
@@ -269,6 +282,4 @@ void UART_PowerDownWakeUpTest(void)
         default:
             break;
     }
-
-    printf("\nUART Sample Program End.\n");
 }

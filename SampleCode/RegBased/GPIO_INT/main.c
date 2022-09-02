@@ -27,7 +27,6 @@
 void GPAB_IRQHandler(void)
 {
     /* To check if PB.3 interrupt occurred */
-
     if(GPIO_GET_INT_FLAG(PB, BIT3))
     {
         GPIO_CLR_INT_FLAG(PB, BIT3);
@@ -35,7 +34,7 @@ void GPAB_IRQHandler(void)
     }
     else
     {
-        /* Un-expected interrupt. Just clear all PA, PB interrupts */
+        /* Un-expected interrupt. Just clear all PA and PB interrupts */
         PA->ISRC = PA->ISRC;
         PB->ISRC = PB->ISRC;
         printf("Un-expected interrupts.\n");
@@ -87,7 +86,7 @@ void SYS_Init(void)
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to Power-down mode */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk; 
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
 
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
@@ -140,7 +139,7 @@ void UART0_Init(void)
 /*---------------------------------------------------------------------------------------------------------*/
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-int main(void)
+int32_t main(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -170,7 +169,7 @@ int main(void)
     PB->IEN |= (BIT3 << GPIO_IEN_IR_EN_Pos);
     NVIC_EnableIRQ(GPAB_IRQn);
 
-    /*  Configure PE.5 as Quasi-bidirection mode and enable interrupt by falling edge trigger */
+    /* Configure PE.5 as Quasi-bidirection mode and enable interrupt by falling edge trigger */
     PE->PMD = (PE->PMD & (~GPIO_PMD_PMD5_Msk)) | (GPIO_PMD_QUASI << GPIO_PMD_PMD5_Pos);
     PE->IMD |= (GPIO_IMD_EDGE << 5);
     PE->IEN |= (BIT5 << GPIO_IEN_IF_EN_Pos);

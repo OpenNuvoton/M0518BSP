@@ -165,7 +165,7 @@ int main(void)
     /* Enable Timer0 NVIC */
     NVIC_EnableIRQ(TMR0_IRQn);
 
-    /* Start Timer2 counting and output TM2 frequency to 500 Hz*/
+    /* Start Timer2 counting and output TM2 frequency to 500 Hz */
     TIMER2->TCMPR = (__HXT / 1000);
     TIMER2->TCSR = TIMER_TCSR_CEN_Msk | TIMER_TOGGLE_MODE;
 
@@ -192,18 +192,20 @@ int main(void)
             if(u32CAPDiff != 500)
             {
                 printf("*** FAIL ***\n");
-                while(1);
+                goto lexit;
             }
             u32InitCount = g_au32TMRINTCount[0];
         }
     }
 
+    printf("*** PASS ***\n");
+
+lexit:
+
     /* Stop Timer0, Timer2 and Timer3 counting */
     TIMER0->TCSR = 0;
     TIMER2->TCSR = 0;
     TIMER3->TCSR = 0;
-
-    printf("*** PASS ***\n");
 
     while(1);
 }

@@ -46,14 +46,14 @@ extern "C"
   */
 void SYS_ClearResetSrc(uint32_t u32Src)
 {
-    SYS->RSTSRC |= u32Src;
+    SYS->RSTSRC = u32Src;
 }
 
 /**
   * @brief      Get Brown-out detector output status
   * @param      None
   * @retval     0 System voltage is higher than BOD_VL setting or BOD_EN is 0.
-  *             1 System voltage is lower than BOD_VL setting.
+  * @retval     1 System voltage is lower than BOD_VL setting.
   * @details    This function get Brown-out detector output status.
   */
 uint32_t SYS_GetBODStatus(void)

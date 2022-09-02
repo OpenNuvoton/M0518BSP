@@ -76,7 +76,7 @@ void SYS_Init(void)
     /* Waiting for clock ready */
     CLK_WaitClockReady(CLK_CLKSTATUS_PLL_STB_Msk | CLK_CLKSTATUS_XTL12M_STB_Msk | CLK_CLKSTATUS_OSC22M_STB_Msk);
 
-    /* Switch HCLK clock source to PLL, STCLK to HCLK/2 */
+    /* Switch HCLK clock source to PLL */
     CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_PLL, CLK_CLKDIV_HCLK(2));
 
     /* Enable UART module clock */
@@ -85,7 +85,7 @@ void SYS_Init(void)
     /* Select UART module clock source */
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
 
-    /* Enable PWM0 clock source */
+    /* Enable PWM0 module clock */
     CLK_EnableModuleClock(PWM0_MODULE);
 
     /* Select PWM module clock source */
@@ -100,7 +100,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */

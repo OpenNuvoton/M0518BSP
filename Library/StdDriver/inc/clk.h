@@ -322,6 +322,7 @@ __STATIC_INLINE uint32_t CLK_GetPLLClockFreq(void)
   * @return     None
   * @details    Use the SysTick to generate the delay time and the UNIT is in us.
   *             The SysTick clock source is from HCLK, i.e the same as system core clock.
+  *             User can use SystemCoreClockUpdate() to calculate CyclesPerUs automatically before using this function.
   */
 __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 {

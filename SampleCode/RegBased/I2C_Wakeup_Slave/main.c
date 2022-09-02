@@ -62,7 +62,7 @@ void I2C0_IRQHandler(void)
     }
 }
 /*---------------------------------------------------------------------------------------------------------*/
-/*  Power Wake-up IRQ Handler                                                                                       */
+/*  Power Wake-up IRQ Handler                                                                              */
 /*---------------------------------------------------------------------------------------------------------*/
 void PWRWU_IRQHandler(void)
 {
@@ -77,7 +77,7 @@ void PWRWU_IRQHandler(void)
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*  I2C Slave Transmit/Receive Callback Function                                                                               */
+/*  I2C Slave Transmit/Receive Callback Function                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
 void I2C_SlaveTRx(uint32_t u32Status)
 {
@@ -146,11 +146,11 @@ void SYS_Init(void)
     /* Waiting for Internal RC clock ready */
     while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk));
 
-    /* Switch HCLK clock source to Internal RC and and HCLK source divide 1 */
+    /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
     CLK->CLKSEL0 &= ~CLK_CLKSEL0_HCLK_S_Msk;
     CLK->CLKSEL0 |= CLK_CLKSEL0_HCLK_S_HIRC;
     CLK->CLKDIV &= ~CLK_CLKDIV_HCLK_N_Msk;
-    CLK->CLKDIV |= (CLK_CLKDIV_HCLK(1) << CLK_CLKDIV_HCLK_N_Msk);
+    CLK->CLKDIV |= CLK_CLKDIV_HCLK(1);
 
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
@@ -169,7 +169,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /* Enable UART & I2C0 module clock */
     CLK->APBCLK |= (CLK_APBCLK_UART0_EN_Msk | CLK_APBCLK_I2C0_EN_Msk);
@@ -185,7 +185,7 @@ void SYS_Init(void)
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
     SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
-    
+
     /* Set GPA multi-function pins for I2C0 SDA and SCL */
     SYS->GPA_MFP &= ~(SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk);
     SYS->GPA_MFP |= (SYS_GPA_MFP_PA8_I2C0_SDA | SYS_GPA_MFP_PA9_I2C0_SCL);
@@ -265,7 +265,7 @@ void I2C0_Close(void)
 /*---------------------------------------------------------------------------------------------------------*/
 int32_t main(void)
 {
-    uint32_t i;
+    uint32_t i, u32TimeOutCnt;
 
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -284,7 +284,7 @@ int32_t main(void)
     */
     printf("\n");
     printf("+-----------------------------------------------------------------------+\n");
-    printf("| M0518 I2C Driver Sample Code (Slave) for wake-up & access Slave test |\n");
+    printf("| M0518 I2C Driver Sample Code (Slave) for wake-up & access Slave test  |\n");
     printf("|                                                                       |\n");
     printf("| I2C Master (I2C0) <---> I2C Slave(I2C0)                               |\n");
     printf("+-----------------------------------------------------------------------+\n");
@@ -323,8 +323,11 @@ int32_t main(void)
 
     printf("\n");
     printf("CHIP enter power down status.\n");
-    /* Waiting for UART printf finish*/
-    while(((UART0->FSR) & UART_FSR_TE_FLAG_Msk) == 0);
+
+    /* Waiting for UART printf finish */
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    while(((UART0->FSR) & UART_FSR_TE_FLAG_Msk) == 0)
+        if(--u32TimeOutCnt == 0) break;
 
     if(((I2C0->I2CON)&I2C_I2CON_SI_Msk) != 0)
     {

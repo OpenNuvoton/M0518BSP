@@ -21,22 +21,28 @@
 #define REVEIVE_MODE            (0)
 #define TRANSMIT_MODE           (1)
 
-void SYS_Init(void)
+int32_t SYS_Init(void)
 {
+    uint32_t u32TimeOutCnt;
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
     /* Enable Internal RC 22.1184MHz clock */
-    CLK->PWRCON |= (CLK_PWRCON_OSC22M_EN_Msk | CLK_PWRCON_XTL12M_EN_Msk);
+    CLK->PWRCON |= CLK_PWRCON_OSC22M_EN_Msk;
 
     /* Waiting for Internal RC clock ready */
-    while (!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk));
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    while (!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk))
+        if(--u32TimeOutCnt == 0) return -1;
 
     /* Set core clock as PLL_CLOCK from PLL */
     CLK->PLLCON = PLLCON_SETTING;
 
     /* Wait for PLL stable */
-    while (!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk));
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    while (!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk))
+        if(--u32TimeOutCnt == 0) return -1;
 
     /* Set HCLK as PLL */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_PLL;
@@ -47,7 +53,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
     
     /* Enable UART module clock */
     CLK->APBCLK |= CLK_APBCLK_UART1_EN_Msk;
@@ -63,7 +69,9 @@ void SYS_Init(void)
     PB->PMD = (PB->PMD & (~GPIO_PMD_PMD6_Msk)) | (GPIO_PMD_OUTPUT << GPIO_PMD_PMD6_Pos);
     nRTSPin = REVEIVE_MODE;
     SYS->GPB_MFP = (SYS->GPB_MFP & (~SYS_GPB_MFP_PB4_Msk)) | SYS_GPB_MFP_PB4_UART1_RXD;
-    SYS->GPB_MFP = (SYS->GPB_MFP & (~SYS_GPB_MFP_PB5_Msk)) | SYS_GPB_MFP_PB5_UART1_TXD;    
+    SYS->GPB_MFP = (SYS->GPB_MFP & (~SYS_GPB_MFP_PB5_Msk)) | SYS_GPB_MFP_PB5_UART1_TXD;
+
+    return 0;
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -80,7 +88,7 @@ int main(void)
     WDT->WTCR |= (WDT_TIMEOUT_2POW18 | WDT_WTCR_WTR_Msk);
     
     /* Init System, peripheral clock and multi-function I/O */
-    SYS_Init();
+    if( SYS_Init() < 0 ) goto _APROM;
     
     /* Init UART to 115200-8n1 for print message */
     UART_Init();

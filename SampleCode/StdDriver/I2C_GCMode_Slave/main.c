@@ -4,7 +4,7 @@
  * $Revision: 3 $
  * $Date: 15/07/22 5:53p $
  * @brief
- *           Show a Slave how to receive data from Master in GC (General Call) mode. 
+ *           Show a Slave how to receive data from Master in GC (General Call) mode.
  *           This sample code needs to work with I2C_GCMode_Master.
  * @note
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
@@ -226,7 +226,7 @@ int32_t main(void)
 
     printf("\n");
     printf("+-----------------------------------------------------------------+\n");
-    printf("| M0518 I2C Driver Sample Code (Slave) for access Slave (GC Mode)|\n");
+    printf("| M0518 I2C Driver Sample Code (Slave) for access Slave (GC Mode) |\n");
     printf("|                                                                 |\n");
     printf("| I2C Master (I2C0) <---> I2C Slave(I2C0)(Address: 0x00)          |\n");
     printf("+-----------------------------------------------------------------+\n");
@@ -265,18 +265,20 @@ int32_t main(void)
         if(g_u8SlvData[i] != g_au8TxData[2])
         {
             printf("GC Mode Receive data fail.\n");
-            while(1);
+            goto lexit;
         }
     }
 
     printf("GC Mode receive data OK.\n");
+
+lexit:
 
     s_I2C0HandlerFn = NULL;
 
     /* Close I2C0 */
     I2C0_Close();
 
-    return 0;
+    while(1);
 }
 
 

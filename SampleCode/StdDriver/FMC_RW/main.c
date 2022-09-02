@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include "M0518.h"
 
-#define PLLCON_SETTING      CLK_PLLCON_50MHz_HXT
+
 #define PLL_CLOCK           50000000
 
 

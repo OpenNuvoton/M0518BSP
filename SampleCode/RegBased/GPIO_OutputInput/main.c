@@ -32,8 +32,8 @@ void SYS_Init(void)
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to Power-down mode */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk;     
-    
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
+
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
@@ -85,7 +85,7 @@ void UART0_Init()
 /*---------------------------------------------------------------------------------------------------------*/
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-int main(void)
+int32_t main(void)
 {
     int32_t i32Err;
 
@@ -107,7 +107,7 @@ int main(void)
     printf("+-------------------------------------------------+\n\n");
 
     /* Configure PB.2 as Output mode and PC.1 as Input mode */
-    PB->PMD = (PB->PMD & (~GPIO_PMD_PMD2_Msk))| (GPIO_PMD_OUTPUT << GPIO_PMD_PMD2_Pos);
+    PB->PMD = (PB->PMD & (~GPIO_PMD_PMD2_Msk)) | (GPIO_PMD_OUTPUT << GPIO_PMD_PMD2_Pos);
     PC->PMD = (PC->PMD & (~GPIO_PMD_PMD1_Msk)) | (GPIO_PMD_INPUT << GPIO_PMD_PMD1_Pos);
 
     i32Err = 0;

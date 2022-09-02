@@ -50,8 +50,8 @@ void SYS_Init(void)
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to Power-down mode */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk;        
-    
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
+
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
@@ -109,7 +109,7 @@ void UART0_Init()
 /*---------------------------------------------------------------------------------------------------------*/
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-int main(void)
+int32_t main(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -154,6 +154,7 @@ void UART_TEST_HANDLE()
     uint8_t u8InChar = 0xFF;
     uint32_t u32IntSts = UART0->ISR;
 
+    /* Receive Data Available Interrupt Handle */
     if(u32IntSts & UART_ISR_RDA_INT_Msk)
     {
         printf("\nInput:");
@@ -183,6 +184,7 @@ void UART_TEST_HANDLE()
         printf("\nTransmission Test:");
     }
 
+    /* Transmit Holding Register Empty Interrupt Handle */
     if(u32IntSts & UART_ISR_THRE_INT_Msk)
     {
         uint16_t tmp;
@@ -190,7 +192,7 @@ void UART_TEST_HANDLE()
         if(g_u32comRhead != tmp)
         {
             u8InChar = g_u8RecData[g_u32comRhead];
-            while(UART_IS_TX_FULL(UART0));  /* Wait Tx is not full to transmit data */             
+            while(UART_IS_TX_FULL(UART0));  /* Wait Tx is not full to transmit data */
             UART_WRITE(UART0, u8InChar);
             g_u32comRhead = (g_u32comRhead == (RXBUFSIZE - 1)) ? 0 : (g_u32comRhead + 1);
             g_u32comRbytes--;

@@ -180,13 +180,13 @@ void SYS_Init(void)
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
     SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
-    
+
     /* Set GPA multi-function pins for I2C0 SDA and SCL */
     SYS->GPA_MFP &= ~(SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk);
     SYS->GPA_MFP |= (SYS_GPA_MFP_PA8_I2C0_SDA | SYS_GPA_MFP_PA9_I2C0_SCL);
 }
 
-void UART0_Init()
+void UART0_Init(void)
 {
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init UART                                                                                               */
@@ -234,7 +234,7 @@ void I2C0_Init(void)
 /*---------------------------------------------------------------------------------------------------------*/
 int32_t main(void)
 {
-    uint32_t i;
+    uint32_t i, u32TimeOutCnt;
 
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -278,7 +278,15 @@ int32_t main(void)
         I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STA);
 
         /* Wait I2C Tx Finish */
-        while(g_u8EndFlag == 0);
+        u32TimeOutCnt = I2C_TIMEOUT;
+        while(g_u8EndFlag == 0)
+        {
+            if(--u32TimeOutCnt == 0)
+            {
+                printf("Wait for I2C Tx finish time-out!\n");
+                goto lexit;
+            }
+        }
         g_u8EndFlag = 0;
 
         /* I2C function to read data from slave */
@@ -290,23 +298,33 @@ int32_t main(void)
         I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STA);
 
         /* Wait I2C Rx Finish */
-        while(g_u8EndFlag == 0);
+        u32TimeOutCnt = I2C_TIMEOUT;
+        while(g_u8EndFlag == 0)
+        {
+            if(--u32TimeOutCnt == 0)
+            {
+                printf("Wait for I2C Rx finish time-out!\n");
+                goto lexit;
+            }
+        }
 
         /* Compare data */
         if(g_u8RxData != g_au8TxData[2])
         {
             printf("I2C Byte Write/Read Failed, Data 0x%x\n", g_u8RxData);
-            return -1;
+            goto lexit;
         }
     }
     printf("I2C0 Access EEPROM Test OK\n");
+
+lexit:
 
     s_I2C0HandlerFn = NULL;
 
     /* Close I2C0 */
     I2C0_Close();
 
-    return 0;
+    while(1);
 }
 
 

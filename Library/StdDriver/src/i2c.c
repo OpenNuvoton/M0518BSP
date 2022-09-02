@@ -87,7 +87,7 @@ void I2C_Close(I2C_T *i2c)
     *
   * @return     None
   *
-  * @details    When Time-out flag will be set, use this function to clear I2C bus Time-out Counter flag .
+  * @details    When Time-out flag will be set, use this function to clear I2C bus Time-out Counter flag.
     *
   */
 void I2C_ClearTimeoutFlag(I2C_T *i2c)

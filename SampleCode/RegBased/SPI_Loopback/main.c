@@ -28,7 +28,7 @@ void SPI_Init(void);
 /* ------------- */
 int main(void)
 {
-    uint32_t u32DataCount, u32TestCount, u32Err;
+    uint32_t u32DataCount, u32TestCount, u32Err, u32TimeOutCnt;
 
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -81,13 +81,29 @@ int main(void)
             /* Trigger SPI data transfer */
             SPI0->CNTRL |= SPI_CNTRL_GO_BUSY_Msk;
             /* Check SPI0 busy status */
-            while(SPI0->CNTRL & SPI_CNTRL_GO_BUSY_Msk);
+            u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+            while(SPI0->CNTRL & SPI_CNTRL_GO_BUSY_Msk)
+            {
+                if(--u32TimeOutCnt == 0)
+                {
+                    printf("Wait for SPI busy flag is cleared time-out!\n");
+                    u32Err = 1;
+                    break;
+                }
+            }
+
+            if(u32Err)
+                break;
+
             /* Read received data */
             g_au32DestinationData[u32DataCount] = SPI0->RX;
             u32DataCount++;
             if(u32DataCount > TEST_COUNT)
                 break;
         }
+
+        if(u32Err)
+            break;
 
         /*  Check the received data */
         for(u32DataCount = 0; u32DataCount < TEST_COUNT; u32DataCount++)
@@ -143,9 +159,9 @@ void SYS_Init(void)
 
     /* Setup SPI0 multi-function pins */
     SYS->GPC_MFP &= ~(SYS_GPC_MFP_PC0_Msk | SYS_GPC_MFP_PC1_Msk | SYS_GPC_MFP_PC2_Msk | SYS_GPC_MFP_PC3_Msk);
-		SYS->GPC_MFP |= (SYS_GPC_MFP_PC0_SPI0_SS0 | SYS_GPC_MFP_PC1_SPI0_CLK | SYS_GPC_MFP_PC2_SPI0_MISO0 | SYS_GPC_MFP_PC3_SPI0_MOSI0);
+    SYS->GPC_MFP |= (SYS_GPC_MFP_PC0_SPI0_SS0 | SYS_GPC_MFP_PC1_SPI0_CLK | SYS_GPC_MFP_PC2_SPI0_MISO0 | SYS_GPC_MFP_PC3_SPI0_MOSI0);
     SYS->ALT_MFP &= ~(SYS_ALT_MFP_PC0_Msk | SYS_ALT_MFP_PC1_Msk | SYS_ALT_MFP_PC2_Msk | SYS_ALT_MFP_PC3_Msk);
-		SYS->ALT_MFP |= (SYS_ALT_MFP_PC0_SPI0_SS0 | SYS_ALT_MFP_PC1_SPI0_CLK | SYS_ALT_MFP_PC2_SPI0_MISO0 | SYS_ALT_MFP_PC3_SPI0_MOSI0);
+    SYS->ALT_MFP |= (SYS_ALT_MFP_PC0_SPI0_SS0 | SYS_ALT_MFP_PC1_SPI0_CLK | SYS_ALT_MFP_PC2_SPI0_MISO0 | SYS_ALT_MFP_PC3_SPI0_MOSI0);
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock and CyclesPerUs automatically. */
     SystemCoreClockUpdate();

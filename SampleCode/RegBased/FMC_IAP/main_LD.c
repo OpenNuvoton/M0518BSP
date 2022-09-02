@@ -1,5 +1,5 @@
 /**************************************************************************//**
- * @file     Smpl_DrvFMC_SimpleLD.c
+ * @file     main_LD.c
  * @version  V2.00
  * $Revision: 1 $
  * $Date: 14/10/03 1:24p $
@@ -97,7 +97,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -193,7 +193,7 @@ int32_t IAP_Func3(int32_t n)
 int32_t main(void)
 {
     int32_t i;
-    
+
     /* Init System, IP clock and multi-function I/O */
     SYS_Init();
 
@@ -207,7 +207,7 @@ int32_t main(void)
 
     while(SYS->PDID)__WFI();
 #else
-    
+
     /* Init UART0 for printf */
     UART0_Init();
 
@@ -226,13 +226,13 @@ int32_t main(void)
     // Delay 3 seconds
     for(i = 0; i < 30; i++)
     {
-    	printf(".");
+        printf(".");
         SysTickDelay(10000);
     }
     printf("\n");
 
-	printf("Function table @ 0x%08x\n", g_funcTable);
+    printf("Function table @ 0x%08x\n", g_funcTable);
 
     while(SYS->PDID)__WFI();
-#endif    
+#endif
 }

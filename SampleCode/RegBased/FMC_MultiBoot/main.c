@@ -20,6 +20,7 @@
 extern uint32_t Image$$RO$$Base;
 #endif
 
+int32_t g_FMC_i32ErrCode;
 
 void SYS_Init(void)
 {
@@ -56,7 +57,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -92,6 +93,7 @@ int32_t main(void)
     uint8_t ch;
     uint32_t u32Data;
     uint32_t u32Cfg;
+    uint32_t u32TimeOutCnt;
 
     /* Unlock protected registers for ISP function */
     SYS_UnlockReg();
@@ -161,8 +163,10 @@ int32_t main(void)
         printf("Do you want to set to new IAP mode (APROM boot + LDROM)?\n");
         if(getchar() == 'y')
         {
-            UART_WAIT_TX_EMPTY(DEBUG_PORT); /* To make sure all message has been print out */
-            
+            u32TimeOutCnt = SystemCoreClock; /* 1 swcond time-out */
+            UART_WAIT_TX_EMPTY(DEBUG_PORT)   /* To make sure all message has been print out */
+                if(--u32TimeOutCnt == 0) break;
+
             FMC->ISPCON |= FMC_ISPCON_CFGUEN_Msk; /* Enable user configuration update */
 
             /* Set CBS to b'10 */

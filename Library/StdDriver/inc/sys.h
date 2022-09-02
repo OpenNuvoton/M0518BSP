@@ -1688,7 +1688,7 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
   *             - \ref SYS_BODCR_BOD_VL_2_2V
   * @return     None
   * @details    This macro set Brown-out detector voltage level.
-  *             The write-protection function should be disabled before using this macro.
+  *             The register write-protection function should be disabled before using this macro.
   */
 #define SYS_SET_BOD_LEVEL(u32Level)     (SYS->BODCR = (SYS->BODCR & ~SYS_BODCR_BOD_VL_Msk) | (u32Level))
 
@@ -1712,10 +1712,10 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 
 /**
   * @brief      Get reset source is from Low-Voltage-Reset
-  * @param      None     
+  * @param      None
   * @retval     0   Previous reset source is not from Low-Voltage-Reset
   * @retval     >=1 Previous reset source is from Low-Voltage-Reset
-  * @details    This macro get previous reset source is from Low-Voltage-Reset. 
+  * @details    This macro get previous reset source is from Low-Voltage-Reset.
   */
 #define SYS_IS_LVR_RST()                (SYS->RSTSRC & SYS_RSTSRC_RSTS_LVR_Msk)
 
@@ -1804,7 +1804,7 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
   * @return     None
   * @details    This macro clear reset source flag.
   */
-#define SYS_CLEAR_RST_SOURCE(u32RstSrc) (SYS->RSTSRC | (u32RstSrc) )
+#define SYS_CLEAR_RST_SOURCE(u32RstSrc) (SYS->RSTSRC = (u32RstSrc) )
 
 
 /**
@@ -1829,11 +1829,14 @@ static __INLINE void SYS_LockReg(void)
   */
 static __INLINE void SYS_UnlockReg(void)
 {
+    uint32_t u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+
     while(SYS->REGWRPROT != SYS_REGWRPROT_REGPROTDIS_Msk)
     {
         SYS->REGWRPROT = 0x59;
         SYS->REGWRPROT = 0x16;
         SYS->REGWRPROT = 0x88;
+        if(--u32TimeOutCnt == 0) break;
     }
 }
 
@@ -1842,7 +1845,7 @@ void SYS_ClearResetSrc(uint32_t u32Src);
 uint32_t SYS_GetBODStatus(void);
 uint32_t SYS_GetResetSrc(void);
 uint32_t SYS_IsRegLocked(void);
-uint32_t  SYS_ReadPDID(void);
+uint32_t SYS_ReadPDID(void);
 void SYS_ResetChip(void);
 void SYS_ResetCPU(void);
 void SYS_ResetModule(uint32_t u32ModuleIndex);
