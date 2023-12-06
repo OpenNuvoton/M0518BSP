@@ -8,7 +8,8 @@
  *           This sample code needs to connect SPI0_MISO0 pin and SPI0_MOSI0 pin together. 
  *           It will compare the received data with transmitted data.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include <stdio.h>
 #include "M0518.h"
@@ -188,7 +189,7 @@ void SPI_Init(void)
     /* Enable the automatic hardware slave select function. Select the SPI0_SS0 pin and configure as low-active. */
     SPI0->SSR = SPI_SSR_AUTOSS_Msk | SPI_SS0;
     /* Set IP clock divider. SPI clock rate = HCLK / ((0+1)*2) = 6 MHz */
-    SPI0->DIVIDER = SPI0->DIVIDER & (~SPI_DIVIDER_DIVIDER_Msk) | 0;
+    SPI0->DIVIDER = (SPI0->DIVIDER & (~SPI_DIVIDER_DIVIDER_Msk)) | 0;
 }
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/

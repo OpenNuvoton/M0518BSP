@@ -5,7 +5,8 @@
  * $Date: 14/12/25 10:23a $
  * @brief    Capture the PWM1 Channel 0 waveform by PWM0 Channel 0.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M0518.h"

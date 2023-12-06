@@ -5,8 +5,9 @@
  * $Date: 15/07/10 2:51p $
  * @brief    Show how to wake up system form Power-down mode by UART interrupt.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
  *
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M0518.h"

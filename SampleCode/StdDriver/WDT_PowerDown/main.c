@@ -5,7 +5,8 @@
  * $Date: 15/09/15 11:03a $
  * @brief    Use WDT time-out interrupt event to wake-up system.
  * @note
- * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M0518.h"
