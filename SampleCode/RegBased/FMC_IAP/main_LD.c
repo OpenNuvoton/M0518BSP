@@ -49,6 +49,7 @@ const uint32_t * __attribute__((section(".ARM.__at_0x00100E00"))) g_funcTable[4]
 #endif
 #endif
 
+void ProcessHardFault(void){}
 
 void SysTickDelay(uint32_t us)
 {
