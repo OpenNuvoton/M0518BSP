@@ -295,6 +295,9 @@ uint32_t SPI_GetStatus(SPI_T *spi, uint32_t u32Mask);
   * @} End of M0518 Function Interface
   */
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
