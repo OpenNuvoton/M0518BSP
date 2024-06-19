@@ -8,7 +8,7 @@ This BSP folder
 - Revision History.pdf<br>
 	This document shows the revision history of BSP.
 
-- NuMicro M0518 Series Driver Reference Guide.chm<br>
+- NuMicro M0518 Driver Reference Guide.chm<br>
 	This document describes the usage of drivers in BSP.
 
 ## .\Library\
