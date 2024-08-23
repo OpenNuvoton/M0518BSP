@@ -4,7 +4,7 @@
  * $Revision: 2 $
  * $Date: 14/12/25 10:23a $
  * @brief
- *           Configure SPI0 as Slave mode and demonstrate how to communicate with an off-chip SPI Master device. 
+ *           Configure SPI0 as Slave mode and demonstrate how to communicate with an off-chip SPI Master device.
  *           This sample code needs to work with SPI_MasterFifoMode sample code.
  * @note
  * @copyright SPDX-License-Identifier: Apache-2.0
@@ -104,6 +104,8 @@ int main(void)
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -112,7 +114,9 @@ void SYS_Init(void)
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
     /* Waiting for clock ready */
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+	while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
 
     /* Select HXT as the clock source of HCLK */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HXT;
@@ -166,5 +170,3 @@ void SPI_Init(void)
 }
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
-
-

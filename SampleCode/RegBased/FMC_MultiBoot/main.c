@@ -4,7 +4,7 @@
  * $Revision: 3 $
  * $Date: 14/12/25 10:23a $
  * @brief
- *           Implement a multi-boot system to boot from different applications in APROM. 
+ *           Implement a multi-boot system to boot from different applications in APROM.
  *           A LDROM code and 4 APROM code are implemented in this sample code.
  * @note
  * @copyright SPDX-License-Identifier: Apache-2.0
@@ -25,6 +25,8 @@ int32_t g_FMC_i32ErrCode;
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
+
     int32_t i;
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
@@ -280,7 +282,3 @@ lexit:
     printf("\nDone\n");
     while(SYS->PDID) __WFI();
 }
-
-
-
-

@@ -103,10 +103,10 @@ typedef enum IRQn
     PWRWU_IRQn                = 28,       /*!< Power Down Wake Up Interrupt                         */
     ADC_IRQn                  = 29,       /*!< ADC Interrupt                                        */
     CKD_IRQn                  = 30,       /*!< Clock detection Interrupt                            */
-} IRQn_Type;                                            
-                                                        
-                                                        
-/*                                                      
+} IRQn_Type;
+
+
+/*
  * ==========================================================================
  * ----------- Processor and Core Peripheral Section ------------------------
  * ==========================================================================
@@ -116,6 +116,10 @@ typedef enum IRQn
 #define __MPU_PRESENT           0       /*!< armikcmu does not provide a MPU present or not       */
 #define __NVIC_PRIO_BITS        2       /*!< armikcmu Supports 2 Bits for the Priority Levels     */
 #define __Vendor_SysTickConfig  0       /*!< Set to 1 if different SysTick Config is used         */
+#define __FPU_PRESENT           0
+#ifndef __SOFTFP__
+# define __SOFTFP__             1
+#endif
 
 
 /*@}*/ /* end of group CMSIS */
@@ -2759,7 +2763,7 @@ typedef struct
 
 #define CLK_CLKDCTL_HXTFIEN_Pos           5                                           /*!< CLK_T::CLKDCTL: HXTFIEN Position */
 #define CLK_CLKDCTL_HXTFIEN_Msk           (1ul << CLK_CLKDCTL_HXTFIEN_Pos)            /*!< CLK_T::CLKDCTL: HXTFIEN Mask */
-                                                                                    
+
 #define CLK_CLKDCTL_HXTFDEN_Pos           4                                           /*!< CLK_T::CLKDCTL: HXTFDEN Position */
 #define CLK_CLKDCTL_HXTFDEN_Msk           (1ul << CLK_CLKDCTL_HXTFDEN_Pos)            /*!< CLK_T::CLKDCTL: HXTFDEN Mask */
 
@@ -8851,7 +8855,7 @@ typedef struct
      * |        |          |1 = RTS signal is inactive.
      * |        |          |Note1: This RTS signal control bit is not effective when RTS auto-flow control is enabled in UART function mode.
      * |        |          |Note2: This RTS signal control bit is not effective when RS-485 auto direction mode (AUD) is enabled in RS-485 function mode.
-     * |[9]     |LEV_RTS   |RTS Pin Active Level 
+     * |[9]     |LEV_RTS   |RTS Pin Active Level
      * |        |          |This bit defines the active level state of RTS pin output.
      * |        |          |0 = RTS pin output is high level active.
      * |        |          |1 = RTS pin output is low level active.
@@ -8874,7 +8878,7 @@ typedef struct
      * |        |          |0 = CTS input has not change state.
      * |        |          |1 = CTS input has change state.
      * |        |          |Note: This bit is read only, but can be cleared by writing "1" to it.
-     * |[4]     |CTS_ST    |CTS Pin Status (Read Only) 
+     * |[4]     |CTS_ST    |CTS Pin Status (Read Only)
      * |        |          |This bit mirror from CTS pin input of voltage logic status.
      * |        |          |0 = CTS pin input is low level voltage logic state.
      * |        |          |1 = CTS pin input is high level voltage logic state.
@@ -9157,7 +9161,7 @@ typedef struct
     /**
      * UA_IRCR
      * ===================================================================================================
-     * Offset: 0x28  UART IrDA Control Register 
+     * Offset: 0x28  UART IrDA Control Register
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
      * | :----: | :----:   | :---- |
@@ -10363,4 +10367,3 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
-

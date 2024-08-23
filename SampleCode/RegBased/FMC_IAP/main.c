@@ -4,9 +4,9 @@
  * $Revision: 2 $
  * $Date: 14/12/25 10:23a $
  * @brief
- *           Show how to call LDROM functions from APROM. 
+ *           Show how to call LDROM functions from APROM.
  *           The code in APROM will look up the table at 0x100E00 to get the address of function of LDROM and call the function.
- *           
+ *
  * @note
  * @copyright SPDX-License-Identifier: Apache-2.0
  *
@@ -32,6 +32,8 @@ int32_t g_FMC_i32ErrCode;
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
+
     int32_t i;
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
@@ -287,7 +289,3 @@ lexit:
     printf("\nDone\n");
     while(SYS->PDID) __WFI();
 }
-
-
-
-
