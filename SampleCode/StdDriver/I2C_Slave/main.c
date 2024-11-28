@@ -170,6 +170,9 @@ void SYS_Init(void)
     /* Set GPA multi-function pins for I2C0 SDA and SCL */
     SYS->GPA_MFP &= ~(SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk);
     SYS->GPA_MFP |= (SYS_GPA_MFP_PA8_I2C0_SDA | SYS_GPA_MFP_PA9_I2C0_SCL);
+
+    /* I2C pin enable schmitt trigger */
+    SYS->GPA_MFP |= ((BIT8 | BIT9) << SYS_GPA_MFP_GPA_TYPE_Pos);
 }
 
 void UART0_Init()
@@ -194,6 +197,8 @@ void I2C0_Init(void)
     printf("I2C clock %d Hz\n", I2C_GetBusClockFreq(I2C0));
 
     /* Set I2C 4 Slave Addresses */
+    /* Note: I2C does not support General Call (GC) mode for device address calling. */
+    /* Therefore, ensure that the GC mode is not enabled when setting the slave address. */
     I2C_SetSlaveAddr(I2C0, 0, 0x15, 0);   /* Slave Address : 0x15 */
     I2C_SetSlaveAddr(I2C0, 1, 0x35, 0);   /* Slave Address : 0x35 */
     I2C_SetSlaveAddr(I2C0, 2, 0x55, 0);   /* Slave Address : 0x55 */

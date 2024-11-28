@@ -231,6 +231,9 @@ void SYS_Init(void)
     /* Set GPA multi-function pins for I2C0 SDA and SCL */
     SYS->GPA_MFP &= ~(SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk);
     SYS->GPA_MFP |= (SYS_GPA_MFP_PA8_I2C0_SDA | SYS_GPA_MFP_PA9_I2C0_SCL);
+
+    /* I2C pin enable schmitt trigger */
+    SYS->GPA_MFP |= ((BIT8 | BIT9) << SYS_GPA_MFP_GPA_TYPE_Pos);
 }
 
 void UART0_Init(void)
