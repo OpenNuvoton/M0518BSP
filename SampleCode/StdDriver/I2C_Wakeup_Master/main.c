@@ -76,7 +76,38 @@ void I2C_MasterTxWakeup(uint32_t u32Status)
     {
         /* TO DO */
         printf("Status 0x%x is NOT processed\n", u32Status);
+        if(u32Status == 0x38)                   /* Master arbitration lost, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x00)              /* Master bus error, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x30)              /* Master transmit data NACK, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x48)              /* Master receive address NACK, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x10)              /* Master repeat start, clear SI */
+        {
+            I2C_SET_DATA(I2C0, (uint32_t)((g_u8DeviceAddr << 1) | 0x01));   /* Write SLA+R to Register I2CDAT */
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+	    }
     }
+    I2C_WAIT_SI_CLEAR(I2C0);
 }
 /*---------------------------------------------------------------------------------------------------------*/
 /*  I2C Rx Callback Function                                                                               */
@@ -128,7 +159,32 @@ void I2C_MasterRx(uint32_t u32Status)
     {
         /* TO DO */
         printf("Status 0x%x is NOT processed\n", u32Status);
+        if(u32Status == 0x38)                 /* Master arbitration lost, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+	    }
+        else if(u32Status == 0x30)            /* Master transmit data NACK, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x48)            /* Master receive address NACK, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x00)            /* Master bus error, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
     }
+    I2C_WAIT_SI_CLEAR(I2C0);
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -167,7 +223,38 @@ void I2C_MasterTx(uint32_t u32Status)
     {
         /* TO DO */
         printf("Status 0x%x is NOT processed\n", u32Status);
+        if(u32Status == 0x38)                   /* Master arbitration lost, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x00)              /* Master bus error, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x30)              /* Master transmit data NACK, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+	    }
+        else if(u32Status == 0x48)              /* Master receive address NACK, stop I2C and clear SI */
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else if(u32Status == 0x10)              /* Master repeat start, clear SI */
+        {
+            I2C_SET_DATA(I2C0, (uint32_t)((g_u8DeviceAddr << 1) | 0x01));   /* Write SLA+R to Register I2CDAT */
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
+        else
+        {
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_STO_SI);
+            I2C_SET_CONTROL_REG(I2C0, I2C_I2CON_SI);
+        }
     }
+    I2C_WAIT_SI_CLEAR(I2C0);
 }
 
 void SYS_Init(void)

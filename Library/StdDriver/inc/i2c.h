@@ -103,6 +103,16 @@ extern "C"
  *    @details      When a new status is presented of I2C bus, the SI flag will be set in I2CON register.
  */
 #define I2C_WAIT_READY(i2c)     while(!((i2c)->I2CON & I2C_I2CON_SI_Msk))
+/**
+ *    @brief        The macro is used to wait for the I2C bus status to be cleared.
+ *
+ *    @param[in]    i2c        Specify I2C port
+ *
+ *    @return       None
+ *
+ *    @details      When the interrupt task is completed, the SI flag will be set and cleared.
+ */
+#define I2C_WAIT_SI_CLEAR(i2c)  while(((i2c)->I2CON & I2C_I2CON_SI_Msk) == I2C_I2CON_SI_Msk)
 
 /**
  *    @brief        The macro is used to Read I2C Bus Data Register

@@ -141,6 +141,7 @@ void I2C_MasterRx(uint32_t u32Status)
         while(I2C0->I2CON & I2C_I2CON_SI_Msk)
             if(--u32TimeOutCnt == 0) break;
     }
+    I2C_WAIT_SI_CLEAR(I2C0);
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -220,6 +221,7 @@ void I2C_MasterTx(uint32_t u32Status)
         while(I2C0->I2CON & I2C_I2CON_SI_Msk)
             if(--u32TimeOutCnt == 0) break;
     }
+    I2C_WAIT_SI_CLEAR(I2C0);
 }
 
 void SYS_Init(void)

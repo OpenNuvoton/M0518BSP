@@ -133,6 +133,7 @@ void I2C_SlaveTRx(uint32_t u32Status)
         /* TO DO */
         printf("Status 0x%x is NOT processed\n", u32Status);
     }
+    I2C_WAIT_SI_CLEAR(I2C0);
 }
 
 void SYS_Init(void)
