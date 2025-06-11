@@ -145,7 +145,11 @@ extern "C"
 #define CLK_PLLCON_32MHz_HXT   (CLK_PLLCON_PLL_SRC_HXT | CLK_PLLCON_NR(6) | CLK_PLLCON_NF( 64) | CLK_PLLCON_NO_4) /*!< Predefined PLLCON setting for 32MHz PLL output with 12MHz X'tal */
 #define CLK_PLLCON_25MHz_HXT   (CLK_PLLCON_PLL_SRC_HXT | CLK_PLLCON_NR(3) | CLK_PLLCON_NF( 25) | CLK_PLLCON_NO_4) /*!< Predefined PLLCON setting for 25MHz PLL output with 12MHz X'tal */
 #else
-# error "The PLL pre-definitions are only valid when external crystal is 12MHz"
+#define CLK_PLLCON_50MHz_HXT   CLK_CalculatePLLSetting(CLK_PLLCON_PLL_SRC_HXT, 50000000) /*!< PLLCON setting for 50MHz PLL output with HXT */
+#define CLK_PLLCON_48MHz_HXT   CLK_CalculatePLLSetting(CLK_PLLCON_PLL_SRC_HXT, 48000000) /*!< PLLCON setting for 48MHz PLL output with HXT */
+#define CLK_PLLCON_36MHz_HXT   CLK_CalculatePLLSetting(CLK_PLLCON_PLL_SRC_HXT, 36000000) /*!< PLLCON setting for 36MHz PLL output with HXT */
+#define CLK_PLLCON_32MHz_HXT   CLK_CalculatePLLSetting(CLK_PLLCON_PLL_SRC_HXT, 32000000) /*!< PLLCON setting for 32MHz PLL output with HXT */
+#define CLK_PLLCON_25MHz_HXT   CLK_CalculatePLLSetting(CLK_PLLCON_PLL_SRC_HXT, 25000000) /*!< PLLCON setting for 25MHz PLL output with HXT */
 #endif
 
 #define CLK_PLLCON_50MHz_HIRC (CLK_PLLCON_PLL_SRC_HIRC | CLK_PLLCON_NR(13) | CLK_PLLCON_NF( 59) | CLK_PLLCON_NO_2) /*!< Predefined PLLCON setting for 50.1918MHz PLL output with 22.1184MHz IRC */
@@ -165,18 +169,18 @@ extern "C"
 #define MODULE_CLKSEL(x)        (((x) >>28) & 0x3)    /*!< Calculate CLKSEL offset on MODULE index, 0x0:CLKSEL0, 0x1:CLKSEL1, 0x2:CLKSEL2, 0x3:CLKSEL3 */
 #define MODULE_CLKSEL_Msk(x)    (((x) >>25) & 0x7)    /*!< Calculate CLKSEL mask offset on MODULE index */
 #define MODULE_CLKSEL_Pos(x)    (((x) >>20) & 0x1f)   /*!< Calculate CLKSEL position offset on MODULE index */
-#define MODULE_CLKDIV(x)        (((x) >>18) & 0x3)    /*!< Calculate APBCLK CLKDIV on MODULE index, 0x0:CLKDIV */
+#define MODULE_CLKDIV(x)        (((x) >>18) & 0x3)    /*!< Calculate CLKDIV offset on MODULE index, 0x0:CLKDIV */
 #define MODULE_CLKDIV_Msk(x)    (((x) >>10) & 0xff)   /*!< Calculate CLKDIV mask offset on MODULE index */
 #define MODULE_CLKDIV_Pos(x)    (((x) >>5 ) & 0x1f)   /*!< Calculate CLKDIV position offset on MODULE index */
 #define MODULE_IP_EN_Pos(x)     (((x) >>0 ) & 0x1f)   /*!< Calculate APBCLK offset on MODULE index */
-#define MODULE_NoMsk            0x0                 /*!< Not mask on MODULE index */
-#define NA                      MODULE_NoMsk        /*!< Not Available */
+#define MODULE_NoMsk            0x0                   /*!< Not mask on MODULE index */
+#define NA                      MODULE_NoMsk          /*!< Not Available */
 
 #define MODULE_APBCLK_ENC(x)        (((x) & 0x03) << 30)   /*!< MODULE index, 0x0:AHBCLK, 0x1:APBCLK, 0x2:APBCLK1 */
 #define MODULE_CLKSEL_ENC(x)        (((x) & 0x03) << 28)   /*!< CLKSEL offset on MODULE index, 0x0:CLKSEL0, 0x1:CLKSEL1, 0x2:CLKSEL2, 0x3:CLKSEL3 */
 #define MODULE_CLKSEL_Msk_ENC(x)    (((x) & 0x07) << 25)   /*!< CLKSEL mask offset on MODULE index */
 #define MODULE_CLKSEL_Pos_ENC(x)    (((x) & 0x1f) << 20)   /*!< CLKSEL position offset on MODULE index */
-#define MODULE_CLKDIV_ENC(x)        (((x) & 0x03) << 18)   /*!< APBCLK CLKDIV on MODULE index, 0x0:CLKDIV, 0x1:CLKDIV1 */
+#define MODULE_CLKDIV_ENC(x)        (((x) & 0x03) << 18)   /*!< CLKDIV offset on MODULE index, 0x0:CLKDIV, 0x1:CLKDIV1 */
 #define MODULE_CLKDIV_Msk_ENC(x)    (((x) & 0xff) << 10)   /*!< CLKDIV mask offset on MODULE index */
 #define MODULE_CLKDIV_Pos_ENC(x)    (((x) & 0x1f) <<  5)   /*!< CLKDIV position offset on MODULE index */
 #define MODULE_IP_EN_Pos_ENC(x)     (((x) & 0x1f) <<  0)   /*!< APBCLK offset on MODULE index */
@@ -332,14 +336,14 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 
     /* Waiting for down-count to zero */
     while((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0);
-    
+
     /* Disable SysTick counter */
-    SysTick->CTRL = 0;    
+    SysTick->CTRL = 0;
 }
 
 /**
   * @brief      This function execute long delay function.
-  * @param[in]  us  Delay time. 
+  * @param[in]  us  Delay time.
   * @return     None
   * @details    Use the SysTick to generate the long delay time and the UNIT is in us.
   *             The SysTick clock source is from HCLK, i.e the same as system core clock.
@@ -349,7 +353,7 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
 {
     uint32_t delay;
-        
+
     /* It should <= 335544us for each delay loop */
     delay = 335544UL;
 
@@ -363,8 +367,8 @@ __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
         {
             delay = us;
             us = 0UL;
-        }        
-        
+        }
+
         SysTick->LOAD = delay * CyclesPerUs;
         SysTick->VAL  = (0x0UL);
         SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
@@ -374,12 +378,105 @@ __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
 
         /* Disable SysTick counter */
         SysTick->CTRL = 0UL;
-    
+
     }while(us > 0UL);
-    
+
 }
 
+/**
+  * @brief      Calculate PLL Setting
+  * @param[in]  u32PllClkSrc is PLL clock source. Including :
+  *             - \ref CLK_PLLCON_PLL_SRC_HXT
+  *             - \ref CLK_PLLCON_PLL_SRC_HIRC
+  * @param[in]  u32PllFreq is PLL frequency. The range of u32PllFreq is 25 MHz ~ 200 MHz.
+  * @return     PLL setting for CLK_PLLCON register
+  * @details    This function is used to calculate CLK_PLLCON register setting for specified PLL clock source and frequency.
+  */
+__STATIC_INLINE uint32_t CLK_CalculatePLLSetting(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
+{
+    uint32_t u32PllSrcFreq, u32NR, u32NF, u32NO;
+    uint32_t u32Tmp, u32Tmp2, u32Tmp3, u32Min, u32MinNF, u32MinNR;
 
+    /* PLL source clock is from HXT */
+    if(u32PllClkSrc == CLK_PLLCON_PLL_SRC_HXT)
+    {
+        /* Select PLL source clock from HXT */
+        u32PllSrcFreq = __HXT;
+    }
+
+    /* PLL source clock is from HIRC */
+    else
+    {
+        /* Select PLL source clock from HIRC */
+        u32PllSrcFreq = __HIRC;
+    }
+
+    /* Select "NO" according to request frequency */
+    if((u32PllFreq <= FREQ_200MHZ) && (u32PllFreq > FREQ_100MHZ))
+    {
+        u32NO = 0;
+    }
+    else if((u32PllFreq <= FREQ_100MHZ) && (u32PllFreq > FREQ_50MHZ))
+    {
+        u32NO = 1;
+        u32PllFreq = u32PllFreq << 1;
+    }
+    else if((u32PllFreq <= FREQ_50MHZ) && (u32PllFreq >= FREQ_25MHZ))
+    {
+        u32NO = 3;
+        u32PllFreq = u32PllFreq << 2;
+    }
+    else
+    {
+        /* Wrong frequency request */
+        goto lexit;
+    }
+
+    /* Find best solution */
+    u32Min = (uint32_t) - 1;
+    u32MinNR = 0;
+    u32MinNF = 0;
+    for(u32NR = 2; u32NR <= 33; u32NR++)
+    {
+        u32Tmp = u32PllSrcFreq / u32NR;
+        if((u32Tmp > 1600000) && (u32Tmp < 15000000))
+        {
+            /* Maximum NF is 300 to avoid calculation overflow */
+            for(u32NF = 2; u32NF <= 300; u32NF++)
+            {
+                u32Tmp2 = u32Tmp * u32NF;
+                if((u32Tmp2 >= 100000000) && (u32Tmp2 <= 200000000))
+                {
+                    u32Tmp3 = (u32Tmp2 > u32PllFreq) ? u32Tmp2 - u32PllFreq : u32PllFreq - u32Tmp2;
+                    if(u32Tmp3 < u32Min)
+                    {
+                        u32Min = u32Tmp3;
+                        u32MinNR = u32NR;
+                        u32MinNF = u32NF;
+
+                        /* Break when get good results */
+                        if(u32Min == 0)
+                            break;
+                    }
+                }
+            }
+            if(u32Min == 0)
+                break;
+        }
+    }
+
+    /* Return PLL setting for CLK_PLLCON register */
+    return ( u32PllClkSrc |
+             (u32NO << CLK_PLLCON_OUT_DV_Pos) |
+             ((u32MinNR - 2) << CLK_PLLCON_IN_DV_Pos) |
+             ((u32MinNF - 2) << CLK_PLLCON_FB_DV_Pos) );
+
+lexit:
+
+    /* Return PLL power-down setting if input PLL frquency parameter is out of range */
+    return CLK_PLLCON_PD_Msk;
+
+}
 
 void CLK_DisableCKO(void);
 void CLK_EnableCKO(uint32_t u32ClkSrc, uint32_t u32ClkDiv, uint32_t u32ClkDivBy1En);
