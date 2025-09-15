@@ -150,9 +150,11 @@ _ISP:
     {
         if(bSpiDataReady == 1)
         {
+            NVIC_DisableIRQ(GPCDEF_IRQn);
             memcpy(cmd_buff, spi_rcvbuf, 64);
             bSpiDataReady = 0;
             ParseCmd((unsigned char *)cmd_buff, 64);
+            NVIC_EnableIRQ(GPCDEF_IRQn);
         }
     }
 
