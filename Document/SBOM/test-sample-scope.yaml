@@ -1,0 +1,6 @@
+sbomType: Test Sample SBOM
+include:
+  - path: SampleCode/
+exclude:
+  - path: Document/
+  - path: Library/

@@ -1,0 +1,243 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:2464c172-0266-4521-aa31-7a078f3f09cd",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-08-05T09:26:57+08:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "author": "anchore",
+          "name": "syft",
+          "version": "1.45.1"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "8e18f0f650a9c2e7",
+      "type": "library",
+      "name": "MCU Driver",
+      "version": "v3.00.006-7-g585c3f9",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "bsp:sbom-category",
+          "value": "product"
+        },
+        {
+          "name": "bsp:scope",
+          "value": "Components included in, linked with, deployed to, or reasonably expected to be integrated into final product firmware/software."
+        },
+        {
+          "name": "bsp:scope-policy-file",
+          "value": "product-scope.yaml"
+        },
+        {
+          "name": "bsp:runtime-scope",
+          "value": "true"
+        },
+        {
+          "name": "bsp:included-in-product-firmware",
+          "value": "true"
+        },
+        {
+          "name": "bsp:third-party-components",
+          "value": "none identified in product scope based on the defined Product SBOM scope policy"
+        },
+        {
+          "name": "bsp:product-scope-include-path",
+          "value": "Library/CMSIS"
+        },
+        {
+          "name": "bsp:product-scope-include-path",
+          "value": "Library/Device"
+        },
+        {
+          "name": "bsp:product-scope-include-path",
+          "value": "Library/StdDriver"
+        },
+        {
+          "name": "bsp:product-scope-exclude-path",
+          "value": "Document/"
+        },
+        {
+          "name": "bsp:product-scope-exclude-path",
+          "value": "SampleCode/"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "m0518bsp:product-component:library-device",
+      "name": "m0518 Device",
+      "version": "v3.00.006-7-g585c3f9",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "scope": "required",
+      "description": "Directory-level first-party BSP product component included from product scope path Library/Device",
+      "properties": [
+        {
+          "name": "bsp:sbom-category",
+          "value": "product"
+        },
+        {
+          "name": "bsp:path",
+          "value": "Library/Device"
+        },
+        {
+          "name": "bsp:component-origin",
+          "value": "first-party"
+        },
+        {
+          "name": "bsp:component-granularity",
+          "value": "directory"
+        },
+        {
+          "name": "bsp:scope-policy-file",
+          "value": "product-scope.yaml"
+        },
+        {
+          "name": "bsp:runtime-scope",
+          "value": "true"
+        },
+        {
+          "name": "bsp:included-in-product-firmware",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "m0518bsp:product-component:library-stddriver",
+      "name": "m0518 StdDriver",
+      "version": "v3.00.006-7-g585c3f9",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "scope": "required",
+      "description": "Directory-level first-party BSP product component included from product scope path Library/StdDriver",
+      "properties": [
+        {
+          "name": "bsp:sbom-category",
+          "value": "product"
+        },
+        {
+          "name": "bsp:path",
+          "value": "Library/StdDriver"
+        },
+        {
+          "name": "bsp:component-origin",
+          "value": "first-party"
+        },
+        {
+          "name": "bsp:component-granularity",
+          "value": "directory"
+        },
+        {
+          "name": "bsp:scope-policy-file",
+          "value": "product-scope.yaml"
+        },
+        {
+          "name": "bsp:runtime-scope",
+          "value": "true"
+        },
+        {
+          "name": "bsp:included-in-product-firmware",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:generic/cmsis-core@3.1.0?source=vendored&path=Library%2FCMSIS%2FInclude",
+      "name": "CMSIS-Core",
+      "version": "3.1.0",
+      "scope": "required",
+      "author": "ARM Limited",
+      "purl": "pkg:generic/cmsis-core@3.1.0",
+      "description": "Vendored CMSIS Cortex-M and SecurCore core-access headers, together with CMSIS-DSP 1.1.0 public headers, under Library/CMSIS/Include.",
+      "licenses": [
+        {
+          "license": {
+            "name": "ARM CMSIS License"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "src_path",
+          "value": "Library/CMSIS/Include"
+        },
+        {
+          "name": "integration",
+          "value": "vendored_source"
+        },
+        {
+          "name": "cmsis_core_version",
+          "value": "3.1.0"
+        },
+        {
+          "name": "cmsis_dsp_header_version",
+          "value": "1.1.0"
+        },
+        {
+          "name": "included_files",
+          "value": "arm_common_tables.h; arm_math.h; core_cm0.h; core_cm0plus.h; core_cm3.h; core_cm4.h; core_cm4_simd.h; core_cmFunc.h; core_cmInstr.h; core_sc000.h; core_sc300.h"
+        },
+        {
+          "name": "bsp:component-origin",
+          "value": "third-party"
+        },
+        {
+          "name": "bsp:component-source",
+          "value": "ARM CMSIS"
+        },
+        {
+          "name": "bsp:evidence-file",
+          "value": "Document/SBOM/cmsis/sca_cmsis.json"
+        },
+        {
+          "name": "bsp:evidence-path",
+          "value": "Library/CMSIS/Include"
+        },
+        {
+          "name": "bsp:version-evidence",
+          "value": "Library/CMSIS/Include/core_cm0.h; Library/CMSIS/Include/core_cm0plus.h; Library/CMSIS/Include/core_cm3.h; Library/CMSIS/Include/core_cm4.h; Library/CMSIS/Include/core_sc000.h; Library/CMSIS/Include/core_sc300.h; Library/CMSIS/Include/arm_math.h"
+        },
+        {
+          "name": "bsp:license-evidence",
+          "value": "Copyright and redistribution notice in each included header"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "8e18f0f650a9c2e7",
+      "dependsOn": [
+        "m0518bsp:product-component:library-device",
+        "m0518bsp:product-component:library-stddriver"
+      ]
+    }
+  ]
+}
