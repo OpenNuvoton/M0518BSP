@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:2464c172-0266-4521-aa31-7a078f3f09cd",
+  "serialNumber": "urn:uuid:0f6259fd-4261-4f9d-9d5f-551d1191e514",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-08-05T09:26:57+08:00",
+    "timestamp": "2026-10-14T14:54:52+08:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,14 @@
       "bom-ref": "8e18f0f650a9c2e7",
       "type": "library",
       "name": "MCU Driver",
-      "version": "v3.00.006-7-g585c3f9",
+      "version": "v3.00.006-8-ga9b516c",
+      "supplier": {
+        "name": "Nuvoton Technology Corp.",
+        "url": [
+          "https://www.nuvoton.com"
+        ]
+      },
+      "purl": "pkg:generic/nuvoton/mcu-driver@v3.00.006-8-ga9b516c",
       "licenses": [
         {
           "license": {
@@ -74,14 +81,43 @@
           "value": "SampleCode/"
         }
       ]
-    }
+    },
+    "lifecycles": [
+      {
+        "phase": "pre-build"
+      }
+    ],
+    "supplier": {
+      "name": "Nuvoton Technology Corp.",
+      "url": [
+        "https://www.nuvoton.com"
+      ]
+    },
+    "authors": [
+      {
+        "name": "Nuvoton Technology Corp."
+      }
+    ]
   },
   "components": [
     {
       "type": "library",
       "bom-ref": "m0518bsp:product-component:library-device",
       "name": "m0518 Device",
-      "version": "v3.00.006-7-g585c3f9",
+      "version": "v3.00.006-8-ga9b516c",
+      "supplier": {
+        "name": "Nuvoton Technology Corp.",
+        "url": [
+          "https://www.nuvoton.com"
+        ]
+      },
+      "purl": "pkg:generic/nuvoton/library-device@v3.00.006-8-ga9b516c",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "9e8b3c6f9aef81c2cfb97621deb6ed80647ef8d19876fa5edc70cdee8dd098b6"
+        }
+      ],
       "licenses": [
         {
           "license": {
@@ -126,7 +162,20 @@
       "type": "library",
       "bom-ref": "m0518bsp:product-component:library-stddriver",
       "name": "m0518 StdDriver",
-      "version": "v3.00.006-7-g585c3f9",
+      "version": "v3.00.006-8-ga9b516c",
+      "supplier": {
+        "name": "Nuvoton Technology Corp.",
+        "url": [
+          "https://www.nuvoton.com"
+        ]
+      },
+      "purl": "pkg:generic/nuvoton/library-stddriver@v3.00.006-8-ga9b516c",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "31c9e3a81f47928607ea1004c3fc2b3711acd5a34787930b71a9c25c99d0148e"
+        }
+      ],
       "licenses": [
         {
           "license": {
@@ -178,9 +227,7 @@
       "description": "Vendored CMSIS Cortex-M and SecurCore core-access headers, together with CMSIS-DSP 1.1.0 public headers, under Library/CMSIS/Include.",
       "licenses": [
         {
-          "license": {
-            "name": "ARM CMSIS License"
-          }
+          "expression": "LicenseRef-ARM-CMSIS-License"
         }
       ],
       "properties": [
@@ -228,6 +275,12 @@
           "name": "bsp:license-evidence",
           "value": "Copyright and redistribution notice in each included header"
         }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "a56d8bfac7b92f0fcbd99d79ad5e78aeac30cb6935a1761c319a122771cd4993"
+        }
       ]
     }
   ],
@@ -239,5 +292,16 @@
         "m0518bsp:product-component:library-stddriver"
       ]
     }
-  ]
+  ],
+  "signature": {
+    "algorithm": "ES256",
+    "keyId": "wschang0@nuvoton.com",
+    "publicKey": {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "Yjak-cZfA8dgOThPETOK7jyK7VE8E8jz8BnURXS2h24",
+      "y": "QfyRtTn7Hdbu7YoOOEVRKP_PFTXZVFQ12TW8E5rO_pU"
+    },
+    "value": "_vmHEGCR2ICk9AXsbsGmxRryXFnPjfBNi7wy8SSLOTR_hg7zLGozE49JXzT3jQgVHYrEOL7vup-jVImdNMYc4w"
+  }
 }

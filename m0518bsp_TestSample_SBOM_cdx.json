@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:70e6ce2a-84b8-451a-97c9-95abd5f994f4",
+  "serialNumber": "urn:uuid:67b5f1dd-254c-4ac3-933d-394ca517f33c",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-08-05T09:27:09+08:00",
+    "timestamp": "2026-10-14T14:54:57+08:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,14 @@
       "bom-ref": "ecfcd1732a6c55c6",
       "type": "application",
       "name": "MCU Test Sample",
-      "version": "v3.00.006-7-g585c3f9",
+      "version": "v3.00.006-8-ga9b516c",
+      "supplier": {
+        "name": "Nuvoton Technology Corp.",
+        "url": [
+          "https://www.nuvoton.com"
+        ]
+      },
+      "purl": "pkg:generic/nuvoton/mcu-test-sample@v3.00.006-8-ga9b516c",
       "licenses": [
         {
           "license": {
@@ -62,14 +69,43 @@
           "value": "Library/"
         }
       ]
-    }
+    },
+    "lifecycles": [
+      {
+        "phase": "pre-build"
+      }
+    ],
+    "supplier": {
+      "name": "Nuvoton Technology Corp.",
+      "url": [
+        "https://www.nuvoton.com"
+      ]
+    },
+    "authors": [
+      {
+        "name": "Nuvoton Technology Corp."
+      }
+    ]
   },
   "components": [
     {
       "type": "application",
       "bom-ref": "m0518bsp:test-sample-component:samplecode",
       "name": "m0518 SampleCode",
-      "version": "v3.00.006-7-g585c3f9",
+      "version": "v3.00.006-8-ga9b516c",
+      "supplier": {
+        "name": "Nuvoton Technology Corp.",
+        "url": [
+          "https://www.nuvoton.com"
+        ]
+      },
+      "purl": "pkg:generic/nuvoton/samplecode@v3.00.006-8-ga9b516c",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "ed0de501748dd4a25038e83f454b62d05742566ab847b36884483e6feba352d8"
+        }
+      ],
       "licenses": [
         {
           "license": {
@@ -118,5 +154,16 @@
         "m0518bsp:test-sample-component:samplecode"
       ]
     }
-  ]
+  ],
+  "signature": {
+    "algorithm": "ES256",
+    "keyId": "wschang0@nuvoton.com",
+    "publicKey": {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "Yjak-cZfA8dgOThPETOK7jyK7VE8E8jz8BnURXS2h24",
+      "y": "QfyRtTn7Hdbu7YoOOEVRKP_PFTXZVFQ12TW8E5rO_pU"
+    },
+    "value": "GQAPteyGv4Pqo1MdDPYNpzSVqSr0pOzdPWQQXv9m_t0oA35RJEc29hAYSCSltLaDBoQwlE9-imnMPh3HdZzx-g"
+  }
 }
